@@ -48,6 +48,29 @@ public class TextController {
         return "redirect:/basic/texts/" + text.getId();
     }
 
+    //글 수정 폼 조회
+    @GetMapping("/{textId}/edit")
+    public String editForm(@PathVariable("textId") Long textId, Model model) {
+        Text text = textRepository.findById(textId);
+        model.addAttribute("text", text);
+
+        return "basic/editForm";
+    }
+
+    //글 수정 처리
+    @PostMapping("/{textId}/edit")
+    public String editText(@PathVariable("textId") Long textId, @ModelAttribute Text updateParam) {
+        textRepository.update(textId, updateParam);
+        return "redirect:/basic/texts";
+    }
+
+    //글 삭제 처리
+    @GetMapping("/{textId}/remove")
+    public String removeText(@PathVariable("textId") Long textId) {
+        textRepository.remove(textId);
+        return "redirect:/basic/texts";
+    }
+
     @PostConstruct
     public void init() {
         textRepository.save(new Text("A", "a"));
